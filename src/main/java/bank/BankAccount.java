@@ -5,7 +5,8 @@ package bank;
  * <p>
  * Номер счёта и владелец задаются один раз в конструкторе и больше не меняются.
  * Баланс снаружи изменить нельзя: для этого есть {@link #deposit(double)} и
- * {@link #withdraw(double)}, а наследники работают с балансом через
+ * {@link #withdraw(double)}. Наследники проверяют возможность снятия через
+ * {@link #canWithdraw(double, double)} и меняют баланс через
  * {@link #decreaseBalance(double)}.
  */
 public abstract class BankAccount {
@@ -67,6 +68,19 @@ public abstract class BankAccount {
 
     public String getOwner() {
         return owner;
+    }
+
+    /**
+     * Проверяет, можно ли снять сумму так, чтобы баланс не ушёл ниже минимума.
+     * Метод защищённый: он нужен только наследникам с их правилами снятия.
+     * Нулевые и отрицательные суммы снимать нельзя.
+     *
+     * @param amount     сумма снятия
+     * @param minBalance минимально допустимый баланс после снятия
+     * @return {@code true}, если снятие возможно
+     */
+    protected boolean canWithdraw(double amount, double minBalance) {
+        return amount > 0 && getBalance() - amount >= minBalance;
     }
 
     /**

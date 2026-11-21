@@ -12,7 +12,7 @@ public class DebitAccount extends BankAccount {
 
     @Override
     public boolean withdraw(double amount) {
-        if (amount <= 0 || amount > getBalance()) {
+        if (!canWithdraw(amount, 0)) {
             return false;
         }
 
